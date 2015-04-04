@@ -278,3 +278,14 @@ GameManager.prototype.tileMatchesAvailable = function () {
 GameManager.prototype.positionsEqual = function (first, second) {
   return first.x === second.x && first.y === second.y;
 };
+GameManager.prototype.startAutoPlay = function() {
+  this.AutoPlayStrategy.reset();
+  this.autoplay();
+};
+
+GameManager.prototype.autoplay = function() {
+  if(!this.isGameTerminated() && this.movesAvailable()) {
+    this.move(this.AutoPlayStrategy.nextMove());
+    setTimeout(this.autoplay.bind(this), this.autoplaySpeeds[this.autoplaySpeed].delay);
+  }
+};
