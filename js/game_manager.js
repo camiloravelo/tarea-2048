@@ -1,8 +1,15 @@
-function GameManager(size, InputManager, Actuator, StorageManager) {
+function GameManager(size, InputManager, Actuator, StorageManager, AutoPlayStrategy) {
   this.size           = size; // Size of the grid
   this.inputManager   = new InputManager;
   this.storageManager = new StorageManager;
   this.actuator       = new Actuator;
+  this.AutoPlayStrategy = new AutoPlayStrategy(this);
+  this.autoplaySpeeds  =  [{ name: "Slow"   , delay: 500 },
+                           { name: "Normal" , delay: 100 },
+                           { name: "Fast"   , delay: 50 },
+                           { name: "Fastest", delay: 0 }];
+
+  this.autoplaySpeed    = 1; 
 
   this.startTiles     = 2;
 
@@ -11,6 +18,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
 
   this.setup();
+  this.startAutoPlay();
 }
 
 // Restart the game
